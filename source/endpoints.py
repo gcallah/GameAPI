@@ -25,12 +25,13 @@ GAME_HOME = os.getenv("GAME_HOME", HEROKU_HOME)
 
 DATA_DIR = f'{GAME_HOME}/data'
 MAIN_MENU_JSON = DATA_DIR + '/' + 'main_menu.json'
+CREATE_GAME_JSON = DATA_DIR + '/' + 'create_game.json'
 
 
-def get_main_menu():
-    print(f"Going to open {MAIN_MENU_JSON}")
+def load_from_file(file):
+    print(f"Going to open {file}")
     try:
-        with open(MAIN_MENU_JSON) as file:
+        with open(file) as file:
             return json.loads(file.read())
     except FileNotFoundError:
         return None
@@ -67,8 +68,7 @@ class Endpoints(Resource):
 @api.route(MAIN_MENU_ROUTE)
 class MainMenu(Resource):
     """
-    This class will serve as live, fetchable documentation of what endpoints
-    are available in the system.
+    This class returns the main menu for the game app.
     """
     @api.response(200, 'Success')
     @api.response(404, 'Not Found')
@@ -76,9 +76,9 @@ class MainMenu(Resource):
         """
         The `get()` method will return the main menu.
         """
-        main_menu = get_main_menu()
+        main_menu = load_from_file(MAIN_MENU_JSON)
         if main_menu is None:
-            raise (NotFound("Main menu not found."))
+            raise (NotFound(f"{MAIN_MENU_JSON} not found."))
         return main_menu
 
 
@@ -121,8 +121,19 @@ class CreateGame(Resource):
     We will be passing in some sort of game object as a
     parameter. Details unknown at present.
     """
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        """
+        This method gets the form needed to create a game.
+        """
+        create_form = load_from_file(CREATE_GAME_JSON)
+        if create_form is None:
+            raise (NotFound(f"{CREATE_GAME_JSON} not found."))
+        return create_form
+
     def post(self):
         """
-        This method returns all games.
+        This method creates a new game.
         """
         return "Game created."

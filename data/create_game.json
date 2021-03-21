@@ -1,0 +1,12 @@
+{
+    "Type": "Form",
+    "Title": "Create a new game",
+    "Fields": {
+        "game_name": {
+            "Value": "",
+            "Prompt": "What is the name of your game?",
+            "Type": "STR"
+        }
+    },
+    "Submit": "Submit URL goes here."
+}
