@@ -2,11 +2,20 @@
     "Type": "Form",
     "Title": "Create a new game",
     "Fields": {
-        "game_name": {
+        "name": {
             "Value": "",
             "Prompt": "What is the name of your game?",
             "Type": "STR"
+        },
+        "max_players": {
+            "Value": 10,
+            "Prompt": "What is the maximum number of players?",
+            "Type": "INT",
+            "Hival": 100,
+            "Lowval": 1
         }
     },
-    "Submit": "Submit URL goes here."
+    "Submit": {
+        "url": "/games/create", "method": "post", "text": "Submit"
+    }
 }

@@ -114,6 +114,12 @@ class JoinGame(Resource):
         return "Game joined."
 
 
+game = api.model("new_game", {
+    "name": fields.String("Game name"),
+    "max_players": fields.Integer("Maximum players")
+})
+
+
 @api.route('/games/create')
 class CreateGame(Resource):
     """
@@ -132,6 +138,7 @@ class CreateGame(Resource):
             raise (NotFound(f"{CREATE_GAME_JSON} not found."))
         return create_form
 
+    @api.expect(game)
     def post(self):
         """
         This method creates a new game.

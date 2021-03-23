@@ -12,6 +12,7 @@ from source.endpoints import MAIN_MENU_ROUTE
 from text_menu.text_menu.text_menu import get_single_opt, URL, METHOD
 from text_menu.text_menu.text_menu import TYPE, DATA, data_repr
 from text_menu.text_menu.text_menu import FORM, run_form, MENU
+from text_menu.text_menu.text_menu import SUBMIT, FLDS
 
 SUCCESS = 0
 
@@ -19,10 +20,15 @@ GAME_API_URL = "GAME_API_URL"
 LOCAL_HOST = "http://127.0.0.1:8000"
 
 
-def run_menu(session, server=None, route=None, menu=None):
+def submit_form(session, server, form):
+    if form[SUBMIT][METHOD] == 'post':
+        print(f"Submitting {form[FLDS]}")
+        session.post(f"{server}{form[SUBMIT][URL]}")
+
+
+def run_menu(session, server, route=None, menu=None):
     """
-    The caller must pass *either* `server` and `route`,
-    OR `menu`.
+    The caller must pass *either* `route` OR `menu`.
     """
     if menu is None:
         menu = session.get(f"{server}{route}")
@@ -34,17 +40,17 @@ def run_menu(session, server=None, route=None, menu=None):
             if ret[TYPE] == DATA:
                 print(f"\n{data_repr(ret)}\n")
             elif ret[TYPE] == FORM:
-                run_form(ret)
+                submit_form(session, server, run_form(ret))
             elif ret[TYPE] == MENU:
-                run_menu(menu=ret)
+                run_menu(server, menu=ret)
     return SUCCESS
 
 
 def main():
-    api_server = os.getenv(GAME_API_URL, LOCAL_HOST)
-    print(f"API server is {api_server}")
+    server = os.getenv(GAME_API_URL, LOCAL_HOST)
+    print(f"API server is {server}")
     session = requests.Session()
-    run_menu(session, server=api_server, route=MAIN_MENU_ROUTE)
+    run_menu(session, server, route=MAIN_MENU_ROUTE)
 
 
 if __name__ == "__main__":
