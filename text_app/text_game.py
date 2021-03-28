@@ -12,7 +12,7 @@ from source.endpoints import MAIN_MENU_ROUTE
 from text_menu.text_menu.text_menu import get_single_opt, URL, METHOD
 from text_menu.text_menu.text_menu import TYPE, DATA, data_repr
 from text_menu.text_menu.text_menu import FORM, run_form, MENU
-from text_menu.text_menu.text_menu import SUBMIT, FLDS
+from text_menu.text_menu.text_menu import SUBMIT, FLDS, DATA_TEXT
 
 SUCCESS = 0
 
@@ -32,13 +32,14 @@ def run_menu(session, server, route=None, menu=None):
     """
     if menu is None:
         menu = session.get(f"{server}{route}")
+    # at this point we should check for 404 etc.
     opt = get_single_opt(menu.json())
     if opt[URL]:
         if opt[METHOD] == 'get':
             result = session.get(f"{server}{opt[URL]}")
             ret = result.json()
             if ret[TYPE] == DATA:
-                print(f"\n{data_repr(ret)}\n")
+                print(f"\n{data_repr(ret)[DATA_TEXT]}\n")
             elif ret[TYPE] == FORM:
                 submit_form(session, server, run_form(ret))
             elif ret[TYPE] == MENU:
