@@ -9,10 +9,10 @@ import os
 import requests
 
 from source.endpoints import MAIN_MENU_ROUTE
-from text_menu.text_menu.text_menu import get_single_opt, URL, METHOD
-from text_menu.text_menu.text_menu import TYPE, DATA, data_repr
-from text_menu.text_menu.text_menu import FORM, run_form, MENU
-from text_menu.text_menu.text_menu import SUBMIT, FLDS, DATA_TEXT
+from textapp.text_app import get_single_opt, URL, METHOD
+from textapp.text_app import TYPE, DATA, data_repr
+from textapp.text_app import FORM, run_form, MENU
+from textapp.text_app import SUBMIT, FLDS, DATA_TEXT
 
 SUCCESS = 0
 
