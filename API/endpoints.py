@@ -3,14 +3,12 @@ This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
 """
 
-import os
-import json
 from flask import Flask
 from flask_restx import Resource, Api, fields
 from werkzeug.exceptions import NotFound
 import textapp.text_app as ta
 
-from API.db import fetch_games
+import API.db as db
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,22 +17,7 @@ HELLO = 'hello'
 AVAILABLE = 'Available endpoints:'
 MAIN_MENU = "Main Menu"
 MAIN_MENU_ROUTE = '/menus/main'
-
-HEROKU_HOME = '/app'
-GAME_HOME = os.getenv("GAME_HOME", HEROKU_HOME)
-
-DATA_DIR = f'{GAME_HOME}/data'
-MAIN_MENU_JSON = DATA_DIR + '/' + 'main_menu.json'
-CREATE_GAME_JSON = DATA_DIR + '/' + 'create_game.json'
-
-
-def load_from_file(file):
-    print(f"Going to open {file}")
-    try:
-        with open(file) as file:
-            return json.loads(file.read())
-    except FileNotFoundError:
-        return None
+MENU_URL = "MenuURL"
 
 
 @api.route('/hello')
@@ -76,9 +59,9 @@ class MainMenu(Resource):
         """
         The `get()` method will return the main menu.
         """
-        main_menu = load_from_file(MAIN_MENU_JSON)
+        main_menu = db.get_main_menu()
         if main_menu is None:
-            raise (NotFound(f"{MAIN_MENU_JSON} not found."))
+            raise (NotFound("Main menu not found."))
         return main_menu
 
 
@@ -91,9 +74,13 @@ class Games(Resource):
         """
         This method returns all games.
         """
+        games = db.get_games()
+        if games is None:
+            raise (NotFound("Games not found."))
         return {ta.TYPE: ta.DATA,
                 ta.TITLE: "Available games",
-                ta.DATA: fetch_games()}
+                ta.DATA: games,
+                MENU_URL: MAIN_MENU_ROUTE}
 
 
 user = api.model("user", {
@@ -133,9 +120,9 @@ class CreateGame(Resource):
         """
         This method gets the form needed to create a game.
         """
-        create_form = load_from_file(CREATE_GAME_JSON)
+        create_form = db.get_create_game()
         if create_form is None:
-            raise (NotFound(f"{CREATE_GAME_JSON} not found."))
+            raise (NotFound("Game form not found."))
         return create_form
 
     @api.expect(game)
