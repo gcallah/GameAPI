@@ -18,6 +18,8 @@ AVAILABLE = 'Available endpoints:'
 MAIN_MENU = "Main Menu"
 MAIN_MENU_ROUTE = '/menus/main'
 MENU_URL = "MenuURL"
+GAMES_MENU_ROUTE = '/menus/games'
+CREATE_GAME_MENU_ROUTE = '/menus/create_game'
 
 
 @api.route('/hello')
@@ -46,6 +48,23 @@ class Endpoints(Resource):
         """
         epts = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {AVAILABLE: epts}
+
+
+@api.route(GAMES_MENU_ROUTE)
+class GamesListMenu(Resource):
+    """
+    This class returns the games menu for the game app.
+    """
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        """
+        The `get()` method will return the games menu.
+        """
+        menu = db.get_games_menu()
+        if menu is None:
+            raise (NotFound("Games menu not found."))
+        return menu
 
 
 @api.route(MAIN_MENU_ROUTE)
@@ -80,7 +99,7 @@ class Games(Resource):
         return {ta.TYPE: ta.DATA,
                 ta.TITLE: "Available games",
                 ta.DATA: games,
-                MENU_URL: MAIN_MENU_ROUTE}
+                MENU_URL: GAMES_MENU_ROUTE}
 
 
 user = api.model("user", {

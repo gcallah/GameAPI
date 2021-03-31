@@ -15,7 +15,6 @@
             "Lowval": 1
         }
     },
-    "Submit": {
-        "url": "/games/create", "method": "post", "text": "Submit"
+    "MenuURL": "/menus/create"
     }
 }

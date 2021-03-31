@@ -14,7 +14,7 @@ from textapp.text_app import SUBMIT, FLDS, DATA_TEXT
 
 SUCCESS = 0
 
-GAME_API_URL = "GAME_API_URL"
+API_SERVER_URL = "GAME_API_URL"
 LOCAL_HOST = "http://127.0.0.1:8000"
 
 
@@ -52,7 +52,7 @@ def run_menu(session, server, route=None, menu=None):
 
 
 def main():
-    server = os.getenv(GAME_API_URL, LOCAL_HOST)
+    server = os.getenv(API_SERVER_URL, LOCAL_HOST)
     print(f"API server is {server}")
     session = requests.Session()
     run_menu(session, server, route=MAIN_MENU_ROUTE)

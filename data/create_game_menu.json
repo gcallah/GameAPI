@@ -3,7 +3,7 @@
     "Title": "Submit Menu",
     "Default": "1",
     "Choices": {
-        "1": {"url": "/games/create", "method": "put", "text": "Create this game"},
+        "c": {"url": "/games/create", "method": "put", "text": "Create this game"},
         "x": {"url": "/menus/main", "text": "Back to main menu"}
     }
 }
