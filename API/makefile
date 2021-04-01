@@ -4,7 +4,11 @@ COVER_PKG = $(shell pwd)
 
 FORCE:
 
-docs: $(DOCFILES)
+docs:
+	pydoc3 -w endpoints
+	pydoc3 -w db
+
+# docs: $(DOCFILES)
 
 %.html: %.py
 	pydoc3 -w ./$<

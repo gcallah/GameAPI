@@ -9,6 +9,7 @@ install:
 
 env:
     PYTHONPATH=$(pwd)
+    GAME_HOME=/home/travis/build/gcallah/GameAPI
 
 script:
     - make tests
