@@ -1,5 +1,6 @@
 LINTER = flake8
 DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
+COVER_PKG = $(shell pwd)
 
 FORCE:
 
@@ -12,7 +13,7 @@ docs: $(DOCFILES)
 tests: lint unit
 
 unit: FORCE
-	nosetests --exe --verbose --with-coverage --cover-package=source
+	nosetests --exe --verbose --with-coverage --cover-package=$(COVER_PKG)
 
 lint: FORCE
 	$(LINTER) *.py

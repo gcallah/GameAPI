@@ -1,18 +1,16 @@
-
 """
 This package provides a simple text interface to a GameAPI server.
 It relies on the `text_menu` package, which is not yet on PyPi,
-so for now we use it as a submodule.
 """
 
 import os
 import requests
 
-from source.endpoints import MAIN_MENU_ROUTE
-from text_menu.text_menu.text_menu import get_single_opt, URL, METHOD
-from text_menu.text_menu.text_menu import TYPE, DATA, data_repr
-from text_menu.text_menu.text_menu import FORM, run_form, MENU
-from text_menu.text_menu.text_menu import SUBMIT, FLDS, DATA_TEXT
+from API.endpoints import MAIN_MENU_ROUTE, MENU_URL
+from textapp.text_app import get_single_opt, URL, METHOD
+from textapp.text_app import TYPE, DATA, data_repr
+from textapp.text_app import FORM, run_form, MENU
+from textapp.text_app import SUBMIT, FLDS, DATA_TEXT
 
 SUCCESS = 0
 
@@ -24,6 +22,12 @@ def submit_form(session, server, form):
     if form[SUBMIT][METHOD] == 'post':
         print(f"Submitting {form[FLDS]}")
         session.post(f"{server}{form[SUBMIT][URL]}")
+
+
+def display_data_page(session, server, data):
+    print(f"\n{data_repr(data)[DATA_TEXT]}\n")
+    if MENU_URL in data:
+        run_menu(session, server, route=data[MENU_URL])
 
 
 def run_menu(session, server, route=None, menu=None):
@@ -39,7 +43,7 @@ def run_menu(session, server, route=None, menu=None):
             result = session.get(f"{server}{opt[URL]}")
             ret = result.json()
             if ret[TYPE] == DATA:
-                print(f"\n{data_repr(ret)[DATA_TEXT]}\n")
+                display_data_page(session, server, ret)
             elif ret[TYPE] == FORM:
                 submit_form(session, server, run_form(ret))
             elif ret[TYPE] == MENU:
