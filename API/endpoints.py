@@ -50,6 +50,23 @@ class Endpoints(Resource):
         return {AVAILABLE: epts}
 
 
+@api.route(CREATE_GAME_MENU_ROUTE)
+class CreateGameMenu(Resource):
+    """
+    This class returns the games menu for the game app.
+    """
+    @api.response(200, 'Success')
+    @api.response(404, 'Not Found')
+    def get(self):
+        """
+        The `get()` method will return the games menu.
+        """
+        menu = db.get_create_game_menu()
+        if menu is None:
+            raise (NotFound("Create game menu not found."))
+        return menu
+
+
 @api.route(GAMES_MENU_ROUTE)
 class GamesListMenu(Resource):
     """

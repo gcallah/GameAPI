@@ -15,6 +15,5 @@
             "Lowval": 1
         }
     },
-    "MenuURL": "/menus/create"
-    }
+    "MenuURL": "/menus/create_game"
 }

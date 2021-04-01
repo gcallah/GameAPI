@@ -4,7 +4,7 @@
     "Default": "j",
     "Choices": {
         "j": {"url": "/games/details", "method": "get", "text": "Join a game."},
-        "x": {"url": "/menus/main", "method": "get", "text": "Back to main menu"}
+        "x": {"url": "", "method": "get", "text": "Back to main menu"}
     }
 }
 
