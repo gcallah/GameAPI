@@ -8,8 +8,9 @@ install:
     - make dev_env
 
 env:
-    PYTHONPATH=/home/travis/build/gcallah/GameAPI
-    GAME_HOME=/home/travis/build/gcallah/GameAPI
+    global:
+        - PYTHONPATH=/home/travis/build/gcallah/GameAPI
+        - GAME_HOME=/home/travis/build/gcallah/GameAPI
 
 script:
     - make tests
