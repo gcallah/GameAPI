@@ -1,5 +1,6 @@
 YAML_LINT = yamllint
 API_DIR = API
+TEXT_DIR = text_app
 REQ_DIR = .
 
 FORCE:
@@ -8,6 +9,7 @@ prod: tests github
 
 tests: FORCE
 	cd $(API_DIR); make tests
+	cd $(TEXT_DIR); make tests
 
 test_yaml:
 	$(YAML_LINT) .travis.yml
@@ -35,3 +37,4 @@ heroku:
 
 docs: FORCE
 	cd $(API_DIR); make docs
+	cd $(TEXT_DIR); make docs
