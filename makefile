@@ -1,6 +1,6 @@
 YAML_LINT = yamllint
 API_DIR = API
-TEXT_DIR = text_app
+TEXT_DIR = textgame
 REQ_DIR = .
 
 FORCE:
