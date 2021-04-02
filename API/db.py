@@ -16,6 +16,14 @@ CREATE_GAME_JSON = DATA_DIR + '/' + 'create_game.json'
 CREATE_GAME_MENU_JSON = DATA_DIR + '/' + 'create_game_menu.json'
 GAMES_JSON = DATA_DIR + '/' + 'games.json'
 
+NAME = 'name'
+
+
+def save_to_file(file, json_data):
+    print(f"Going to save to {file}")
+    with open(file, 'w') as f:
+        f.write(json.dumps(json_data))
+
 
 def load_from_file(file):
     """
@@ -57,6 +65,14 @@ def get_main_menu():
     Fetch the main menu.
     """
     return load_from_file(MAIN_MENU_JSON)
+
+
+def post_create_game(game_data):
+    games = load_from_file(GAMES_JSON)
+    if game_data[NAME] in games:
+        raise ValueError(f"({game_data[NAME]} already is a game.")
+    games[game_data[NAME]] = game_data
+    save_to_file(GAMES_JSON, games)
 
 
 def get_create_game():

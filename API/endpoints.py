@@ -139,6 +139,7 @@ class JoinGame(Resource):
 
 game = api.model("new_game", {
     "name": fields.String("Game name"),
+    "descr": fields.String("Game description"),
     "max_players": fields.Integer("Maximum players")
 })
 
@@ -166,4 +167,5 @@ class CreateGame(Resource):
         """
         This method creates a new game.
         """
+        db.post_create_game(api.payload)
         return "Game created."
